@@ -223,10 +223,19 @@ h3 {
   border: 2px solid #28a745;
 }
 
+.answered-message.partial {
+  background: #fff3cd;
+  border-color: #ffc107;
+}
+
 .answered-message h3 {
   color: #155724;
   font-size: 1.8em;
   margin-bottom: 15px;
+}
+
+.answered-message.partial h3 {
+  color: #856404;
 }
 
 .correct-answer-box {
