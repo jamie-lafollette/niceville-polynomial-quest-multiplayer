@@ -6,9 +6,9 @@ export const questions = [
     "choices": [
       "I. x²(x + 2) − 9(x + 2) = 0",
       "II. x(x² − 9) + 2(x² − 9) = 0",
-      "III. (x − 2)(x² − 9) = 0"
+      "III. (x + 2)(x² − 9) = 0"
     ],
-    "correct": [0, 1]
+    "correct": [0, 1, 2]
   },
   {
     "id": 2,
