@@ -130,15 +130,17 @@ function App() {
         const remaining = Math.max(0, 180 - elapsed);
         setTimeRemaining(remaining);
 
-        // Auto-submit when time runs out
-        if (remaining === 0) {
-          submitAnswer(true); // auto-submit
+        // Auto-submit when time runs out (only if not already answered)
+        if (remaining === 0 && gameData.answers && !gameData.answers[currentPlayerId]) {
+          // Time's up - submit with current answer or null
+          submitAnswerWithData(selectedAnswer, textAnswer, true);
         }
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [view, gameData]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view, gameData, currentPlayerId, selectedAnswer, textAnswer]);
 
   // Start game (host only)
   const startGame = async () => {
@@ -157,18 +159,18 @@ function App() {
     });
   };
 
-  // Submit answer
-  const submitAnswer = async (isAutoSubmit = false) => {
+  // Submit answer helper function
+  const submitAnswerWithData = async (selectedAns, textAns, isAutoSubmit = false) => {
     const gameRef = doc(db, 'games', gameCode);
     const currentQuestion = questions[gameData.currentQuestionIdx];
     
     let isCorrect = false;
     const submissionTime = Date.now() - gameData.questionStartTime;
     
-    if (currentQuestion.type === 'multiple' && selectedAnswer !== null) {
-      isCorrect = (selectedAnswer.sort().join(',') === currentQuestion.correct.sort().join(','));
-    } else if (currentQuestion.type === 'short_text' && textAnswer.trim()) {
-      const normalized = textAnswer.trim().toLowerCase();
+    if (currentQuestion.type === 'multiple' && selectedAns !== null) {
+      isCorrect = (selectedAns.sort().join(',') === currentQuestion.correct.sort().join(','));
+    } else if (currentQuestion.type === 'short_text' && textAns.trim()) {
+      const normalized = textAns.trim().toLowerCase();
       isCorrect = currentQuestion.correct_answer.some(ans => ans.toLowerCase() === normalized);
     }
 
@@ -194,7 +196,7 @@ function App() {
     await updateDoc(gameRef, {
       players: updatedPlayers,
       [answerKey]: {
-        answer: selectedAnswer || textAnswer,
+        answer: selectedAns || textAns,
         correct: isCorrect,
         points: points,
         time: submissionTime
@@ -204,6 +206,11 @@ function App() {
     // Reset for next question
     setSelectedAnswer(null);
     setTextAnswer('');
+  };
+
+  // Submit answer
+  const submitAnswer = async (isAutoSubmit = false) => {
+    submitAnswerWithData(selectedAnswer, textAnswer, isAutoSubmit);
   };
 
   // Next question (host only)
