@@ -401,6 +401,16 @@ function App() {
                   <>Incorrect. Better luck on the next question! 💪</>
                 )}
               </p>
+              
+              <div className="correct-answer-box">
+                <h4>Correct Answer:</h4>
+                {question.type === 'multiple' ? (
+                  <p>{question.correct.map(idx => question.choices[idx]).join(', ')}</p>
+                ) : (
+                  <p>{question.correct_answer.slice(0, 3).join(', ')}</p>
+                )}
+              </div>
+
               {currentPlayerId === gameData.host ? (
                 <button 
                   onClick={nextQuestion} 
