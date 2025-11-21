@@ -171,7 +171,7 @@ export const questions = [
     "id": 16,
     "question": "Solve the equation 2x³ − x² − 8x + 4 = 0 algebraically for all values of x.",
     "type": "short_text",
-    "correct_answer": ["2", "-2", "1/2", "0.5"]
+    "correct_answer": ["2", "-2", "0.5"]
   },
   {
     "id": 17,
@@ -189,7 +189,7 @@ export const questions = [
     "id": 19,
     "question": "Solve x³ + 5x² = 4x + 20 algebraically.",
     "type": "short_text",
-    "correct_answer": ["-5", "2", "-2"]
+    "correct_answer": ["-5", "-2", "2"]
   },
   {
     "id": 20,
