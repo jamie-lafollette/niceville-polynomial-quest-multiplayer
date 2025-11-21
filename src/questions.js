@@ -8,14 +8,14 @@ export const questions = [
       "II. x(x² − 9) + 2(x² − 9) = 0",
       "III. (x − 2)(x² − 9) = 0"
     ],
-    "correct": [0, 1, 2]
+    "correct": [0, 1]
   },
   {
     "id": 2,
-    "question": "How many negative solutions to the equation 2x³ − 4x² + 3x − 1 = 0 exist?",
+    "question": "How many solutions to the equation 2x³ − 4x² + 3x − 1 = 0 exist?",
     "type": "multiple",
     "choices": ["1", "2", "3", "0"],
-    "correct": [3]
+    "correct": [2]
   },
   {
     "id": 3,
@@ -27,7 +27,7 @@ export const questions = [
       "0 and 3, only",
       "−3, 0, and 3"
     ],
-    "correct": [1]
+    "correct": [4]
   },
   {
     "id": 4,
