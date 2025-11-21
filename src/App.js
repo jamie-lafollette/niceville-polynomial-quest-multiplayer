@@ -165,22 +165,47 @@ function App() {
     const currentQuestion = questions[gameData.currentQuestionIdx];
     
     let isCorrect = false;
+    let isPartiallyCorrect = false;
     const submissionTime = Date.now() - gameData.questionStartTime;
     
     if (currentQuestion.type === 'multiple' && selectedAns !== null) {
       isCorrect = (selectedAns.sort().join(',') === currentQuestion.correct.sort().join(','));
     } else if (currentQuestion.type === 'short_text' && textAns.trim()) {
-      const normalized = textAns.trim().toLowerCase();
-      isCorrect = currentQuestion.correct_answer.some(ans => ans.toLowerCase() === normalized);
+      // Parse student's answer - split by common separators
+      const studentAnswers = textAns
+        .split(/[,;\s]+/)  // Split by comma, semicolon, or whitespace
+        .map(a => a.trim().toLowerCase())
+        .filter(a => a.length > 0);  // Remove empty strings
+      
+      // Normalize correct answers
+      const correctAnswers = currentQuestion.correct_answer.map(a => a.toLowerCase());
+      
+      // Count how many correct answers the student got
+      const correctCount = correctAnswers.filter(correctAns => 
+        studentAnswers.some(studentAns => studentAns === correctAns)
+      ).length;
+      
+      // Full credit if all correct
+      if (correctCount === correctAnswers.length && studentAnswers.length === correctAnswers.length) {
+        isCorrect = true;
+      } 
+      // Partial credit if they got at least one correct (but not all)
+      else if (correctCount > 0 && correctCount < correctAnswers.length) {
+        isPartiallyCorrect = true;
+      }
     }
 
-    // Calculate points: 1 point for correct, +1 bonus if answered within 60 seconds
+    // Calculate points
     let points = 0;
     if (isCorrect) {
+      // Full correct: 1 point base, +1 bonus if within 60 seconds
       points = 1;
-      if (submissionTime < 60000) { // 60 seconds
+      if (submissionTime < 60000) {
         points = 2;
       }
+    } else if (isPartiallyCorrect) {
+      // Partial credit: 1 point (no speed bonus for partial)
+      points = 1;
     }
 
     // Update player score
@@ -198,6 +223,7 @@ function App() {
       [answerKey]: {
         answer: selectedAns || textAns,
         correct: isCorrect,
+        partiallyCorrect: isPartiallyCorrect,
         points: points,
         time: submissionTime
       }
@@ -377,7 +403,7 @@ function App() {
                   type="text"
                   value={textAnswer}
                   onChange={(e) => setTextAnswer(e.target.value)}
-                  placeholder="Type your answer"
+                  placeholder="Type your answer (separate multiple answers with commas)"
                   className="input"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') submitAnswer();
