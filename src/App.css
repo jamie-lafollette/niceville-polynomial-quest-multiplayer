@@ -229,6 +229,28 @@ h3 {
   margin-bottom: 15px;
 }
 
+.correct-answer-box {
+  background: #fff;
+  border: 2px solid #800000;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.correct-answer-box h4 {
+  color: #800000;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.correct-answer-box p {
+  color: #333;
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 0;
+}
+
 .scoreboard {
   background: #f8f9fa;
   padding: 20px;
