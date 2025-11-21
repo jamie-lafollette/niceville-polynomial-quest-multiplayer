@@ -183,7 +183,7 @@ export const questions = [
     "id": 18,
     "question": "Solve the equation 8x³ + 4x² − 18x − 9 = 0 algebraically for all values of x.",
     "type": "short_text",
-    "correct_answer": ["-1/2", "-0.5", "3/2", "1.5", "-3/2", "-1.5"]
+    "correct_answer": [ "-0.5", "1.5", "-1.5"]
   },
   {
     "id": 19,
